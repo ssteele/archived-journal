@@ -86,7 +86,29 @@ class LoggerController extends Controller {
      */
     public function bulk_store( UploadRequest $request ) {
 
-        $csv = $request->input('csv');
+        $csv = $request->input( 'csv' );
+
+        $upload = $request->file( 'csv' )->move(
+            base_path() . '/public/', $csv
+        );
+
+        $file = \Excel::load( $upload, function( $reader ) {
+
+            // $results = $reader->get();
+            // echo "<div style=\"min-height:45px; padding:15px; font-size:15px; background-color:#ff0;\">results: <pre>"; print_r($results); echo "</pre></div>";
+
+            $reader->each( function( $columns ) {
+
+                foreach ( $columns as $key => $value ) {
+
+                    echo "<div style=\"min-height:45px; padding:15px; font-size:15px; background-color:#ff0;\">key: <pre>"; print_r($key); echo "</pre></div>";
+                    echo "<div style=\"min-height:45px; padding:15px; font-size:15px; background-color:#ff0;\">value: <pre>"; print_r($value); echo "</pre></div>";
+
+                }
+
+            });
+
+        });
 
     }
 

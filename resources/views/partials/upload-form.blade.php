@@ -1,4 +1,7 @@
-{!! Form::open( ['action' => 'LoggerController@bulk_store'] ) !!}
+{!! Form::open( [
+    'action' => 'LoggerController@bulk_store',
+    'files'  => true,
+] ) !!}
 
     <fieldset data-tabs="false">
 
