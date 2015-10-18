@@ -5,8 +5,14 @@
         <div class="form-group">
 
             {!! Form::label( 'date', 'Date' ) !!}
-            {!! Form::input( 'date', 'date', date( 'Y-m-d' ), ['class' => 'form-control'] ) !!}
-            {{-- {!! Form::select( 'date', array('L' => 'Large', 'S' => 'Small'), ['class' => 'form-control'] ) !!} --}}
+
+            <div class="dropdown-group">
+
+                <select name="date" class="form-control">
+                    {!! $dates !!}
+                </select>
+
+            </div>
 
         </div>
 
