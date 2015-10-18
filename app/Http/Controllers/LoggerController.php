@@ -29,11 +29,9 @@ class LoggerController extends Controller {
      */
     private function _populate_unlogged_dates( $index ) {
 
+        $is_logged_date = strtotime( date( 'Y-m-d', time() - (24 * 60 * 60) * $index ) );
         foreach ( $this->dates_submitted as $obj_date ) {
-
-            $is_logged_date = strtotime( date( 'Y-m-d', time() - (24 * 60 * 60) * $index ) );
             if ( $is_logged_date == strtotime( $obj_date->date ) ) return;
-
         }
 
         // date is not logged, so return it to include in the dropdown
