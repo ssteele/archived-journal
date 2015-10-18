@@ -1,13 +1,13 @@
 {{-- {!! Form::model($data['dashboard'], ['class' => '', 'files' => true, 'method' => 'PATCH']) !!} --}}
-{!! Form::open( ['url' => '/'] ) !!}
+{!! Form::open( ['action' => 'LoggerController@store'] ) !!}
 
     <fieldset data-tabs="false">
 
         <div class="form-group">
 
             {!! Form::label( 'entry_date', 'Date' ) !!}
-            {{-- {!! Form::input( 'date', 'entry_date', date( 'Y-m-d' ), ['class' => 'form-control'] ) !!} --}}
-            {!! Form::select( 'entry_date', array('L' => 'Large', 'S' => 'Small'), ['class' => 'form-control'] ) !!}
+            {!! Form::input( 'date', 'entry_date', date( 'Y-m-d' ), ['class' => 'form-control'] ) !!}
+            {{-- {!! Form::select( 'entry_date', array('L' => 'Large', 'S' => 'Small'), ['class' => 'form-control'] ) !!} --}}
 
         </div>
 
@@ -28,6 +28,12 @@
 
             {!! Form::label( 'title', 'Entry', ['class' => 'control-label'] ) !!}
             {!! Form::textarea( 'title', null, ['class' => 'form-control'] ) !!}
+
+        </div>
+
+        <div class="form-group">
+
+            {!! Form::submit( 'Log', ['class' => 'btn btn-primary form-control'] ) !!}
 
         </div>
 

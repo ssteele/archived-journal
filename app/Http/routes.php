@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', 'LoggerController@index');
+Route::get( '', 'LoggerController@index' );
+Route::post( 'new-journal-entry', array( 'uses' => 'LoggerController@store' ) );
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
