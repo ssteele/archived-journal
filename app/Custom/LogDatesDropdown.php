@@ -13,7 +13,7 @@ class LogDatesDropdown {
      */
     public function __construct( LogDates $log_dates ) {
 
-        $this->_date_limit =$log_dates->date_limit;;
+        $this->_date_limit = $log_dates->date_limit;;
         $this->_dates_submitted = $log_dates->dates_submitted;
 
     }
