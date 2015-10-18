@@ -3,7 +3,7 @@
 use App\Http\Requests\Request;
 
 
-class LoggerRequest extends Request {
+class UploadRequest extends Request {
 
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class LoggerRequest extends Request {
     public function rules() {
 
         return [
-            'tempo' => 'required | numeric',
-            'date'  => 'required | date',
+            'csv' => 'required',
         ];
 
     }

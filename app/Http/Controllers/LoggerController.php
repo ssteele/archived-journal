@@ -6,13 +6,13 @@ use App\Custom\LogDatesDropdown;
 use App\Custom\Tempo;
 use App\Custom\TempoAverage;
 use App\Http\Requests\LoggerRequest;
+use App\Http\Requests\UploadRequest;
 
 
 class LoggerController extends Controller {
 
 
     private $_date_limit = 28;
-    private $_dates_submitted;
 
 
     /**
@@ -28,7 +28,7 @@ class LoggerController extends Controller {
 
 
     /**
-     * Show the journal logging form to the user
+     * Render the journal logging form
      *
      * @return Response
      */
@@ -39,13 +39,25 @@ class LoggerController extends Controller {
         $log_dates_dropdown = new LogDatesDropdown( $log_dates->get() );
         $dates = $log_dates_dropdown->create();
 
-        return view('logger', compact( 'dates' ) );
+        return view( 'logger', compact( 'dates' ) );
 
     }
 
 
     /**
-     * Store a journal entry
+     * Render the bulk CSV upload form
+     *
+     * @return Response
+     */
+    public function upload() {
+
+        return view( 'upload' );
+
+    }
+
+
+    /**
+     * Save a journal entry
      *
      * @return Response
      */
@@ -64,6 +76,17 @@ class LoggerController extends Controller {
         return redirect( '' )->with([
             'flash_message' => $average,
         ]);
+
+    }
+
+    /**
+     * Save several journal entries
+     *
+     * @return Response
+     */
+    public function bulk_store( UploadRequest $request ) {
+
+        $csv = $request->input('csv');
 
     }
 

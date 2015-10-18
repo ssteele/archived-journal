@@ -16,7 +16,7 @@ $(function() {
      */
     var fade_out_alerts = function() {
 
-        $('.alert').not('.alert-important').delay(3000).slideUp(300);
+        $('.alert').delay(3000).slideUp(300);
 
     };
 
