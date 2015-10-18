@@ -38,11 +38,11 @@ class LoggerController extends Controller {
      */
     public function store( LoggerRequest $request ) {
 
-        // $article = $this->_create_article( $request );              // pull out all of the article creation code and push it to a private method
+        $logger = new Logger( $request->all() );
+        \Auth::user()->logger()->save( $logger );
 
         return redirect( '' )->with([
-            'flash_message'           => 'Entry Logged',
-            // 'flash_message_important' => true,
+            'flash_message' => 'Entry Logged',
         ]);
 
     }

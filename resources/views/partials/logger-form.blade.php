@@ -1,23 +1,22 @@
-{{-- {!! Form::model($data['dashboard'], ['class' => '', 'files' => true, 'method' => 'PATCH']) !!} --}}
 {!! Form::open( ['action' => 'LoggerController@store'] ) !!}
 
     <fieldset data-tabs="false">
 
         <div class="form-group">
 
-            {!! Form::label( 'entry_date', 'Date' ) !!}
-            {!! Form::input( 'date', 'entry_date', date( 'Y-m-d' ), ['class' => 'form-control'] ) !!}
-            {{-- {!! Form::select( 'entry_date', array('L' => 'Large', 'S' => 'Small'), ['class' => 'form-control'] ) !!} --}}
+            {!! Form::label( 'date', 'Date' ) !!}
+            {!! Form::input( 'date', 'date', date( 'Y-m-d' ), ['class' => 'form-control'] ) !!}
+            {{-- {!! Form::select( 'date', array('L' => 'Large', 'S' => 'Small'), ['class' => 'form-control'] ) !!} --}}
 
         </div>
 
         <div class="form-group">
 
-            {!! Form::label( 'display_speed', 'Tempo', ['class' => 'control-label'] ) !!}
+            {!! Form::label( 'tempo', 'Tempo', ['class' => 'control-label'] ) !!}
 
             <div class="input-group">
 
-                {!! Form::input( 'number', 'display_speed', null, ['class' => 'form-control', 'min' => 0, 'step' => 1] ) !!}
+                {!! Form::input( 'number', 'tempo', null, ['class' => 'form-control', 'min' => 0, 'step' => 1] ) !!}
                 <span class="input-group-addon">Standard Units</span>
 
             </div>
@@ -26,8 +25,8 @@
 
         <div class="form-group">
 
-            {!! Form::label( 'title', 'Entry', ['class' => 'control-label'] ) !!}
-            {!! Form::textarea( 'title', null, ['class' => 'form-control'] ) !!}
+            {!! Form::label( 'entry', 'Entry', ['class' => 'control-label'] ) !!}
+            {!! Form::textarea( 'entry', null, ['class' => 'form-control'] ) !!}
 
         </div>
 
@@ -36,6 +35,19 @@
             {!! Form::submit( 'Log', ['class' => 'btn btn-primary form-control'] ) !!}
 
         </div>
+
+        @if ( $errors->any() )
+
+            <ul class="alert alert-danger">
+
+                @foreach ( $errors->all() as $error )
+                    <li>{{ $error }}</li>
+                @endforeach
+
+            </ul>
+
+        @endif
+
 
     </fieldset>
 

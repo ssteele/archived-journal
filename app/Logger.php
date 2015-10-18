@@ -15,4 +15,14 @@ class Logger extends Model {
         'date',
     );
 
+
+    /**
+     * Define the relationship between two eloquent models: logger & user
+     */
+    public function user() {
+
+        return $this->belongsTo( 'App\User' );
+
+    }
+
 }

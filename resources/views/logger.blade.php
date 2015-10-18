@@ -9,7 +9,10 @@
                 <div class="panel-heading">Log</div>
 
                 <div class="panel-body">
+
                     @include('partials.logger-form')
+                    @include( 'partials.flash' )
+
                 </div>
 
             </div>
