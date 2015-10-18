@@ -13,6 +13,9 @@ class LoggerController extends Controller {
 
 
     private $_date_limit = 28;
+    private $_average = 0;
+    private $_csv_rows = [];
+    private $_csv_counter = 0;
 
 
     /**
@@ -57,6 +60,34 @@ class LoggerController extends Controller {
 
 
     /**
+     * Calculate recent activity
+     */
+    private function _calculate_tempo() {
+
+        // calculate tempo
+        $tempo = new Tempo( $this->_date_limit );
+        $average_tempo = new TempoAverage( $tempo->get() );
+        $this->_average = $average_tempo->calculate();
+
+    }
+
+
+    /**
+     * Redirect and flash recent activity
+     *
+     * @return Response
+     */
+    private function _redirect() {
+
+        // redirect and flash calculated tempo
+        return redirect( '' )->with([
+            'flash_message' => $this->_average,
+        ]);
+
+    }
+
+
+    /**
      * Save a journal entry
      *
      * @return Response
@@ -67,17 +98,47 @@ class LoggerController extends Controller {
         $logger = new Logger( $request->all() );
         \Auth::user()->logger()->save( $logger );
 
-        // calculate tempo
-        $tempo = new Tempo( $this->_date_limit );
-        $average_tempo = new TempoAverage( $tempo->get() );
-        $average = $average_tempo->calculate();
+        if ( is_null( $request->bulk ) ) {
 
-        // redirect
-        return redirect( '' )->with([
-            'flash_message' => $average,
-        ]);
+            $this->_calculate_tempo();
+            return $this->_redirect();
+
+        }
 
     }
+
+
+    /**
+     * Collect CSV upload rows
+     * ...maatwebsite/excel package is over-encapsulated
+     * @param  array $row    CSV row
+     */
+    private function _collect_csv_row( $row ) {
+
+        $this->_csv_rows[$this->_csv_counter]['date'] = $row['date'];
+        $this->_csv_rows[$this->_csv_counter]['tempo'] = $row['tempo'];
+        $this->_csv_rows[$this->_csv_counter]['entry'] = $row['entry'];
+
+        $this->_csv_counter++;
+
+    }
+
+
+    /**
+     * Use maatwebsite/excel package to extract CSV data
+     * @param  object $csv_upload    File upload
+     */
+    private function _extract_csv_data( $csv_upload ) {
+
+        $file = \Excel::load( $csv_upload, function( $reader ) {
+
+            $reader->each( function( $row ) {
+                $this->_collect_csv_row( $row );
+            });
+
+        });
+    }
+
 
     /**
      * Save several journal entries
@@ -88,27 +149,34 @@ class LoggerController extends Controller {
 
         $csv = $request->input( 'csv' );
 
-        $upload = $request->file( 'csv' )->move(
+        $csv_upload = $request->file( 'csv' )->move(
             base_path() . '/public/', $csv
         );
 
-        $file = \Excel::load( $upload, function( $reader ) {
+        $this->_extract_csv_data( $csv_upload );
 
-            // $results = $reader->get();
-            // echo "<div style=\"min-height:45px; padding:15px; font-size:15px; background-color:#ff0;\">results: <pre>"; print_r($results); echo "</pre></div>";
+        foreach ( $this->_csv_rows as $row ) {
 
-            $reader->each( function( $columns ) {
+            // pass through logger request validation/save methods
+            $logger_request = new LoggerRequest;
 
-                foreach ( $columns as $key => $value ) {
+            $logger_request->replace([
+                'user'  => \Auth::user(),
+                'date'  => \Carbon\Carbon::createFromFormat( 'm.d.y', $row['date'] )->toDateTimeString(),
+                'tempo' => $row['tempo'],
+                'entry' => $row['entry'],
+                'bulk'  => true,
+            ]);
 
-                    echo "<div style=\"min-height:45px; padding:15px; font-size:15px; background-color:#ff0;\">key: <pre>"; print_r($key); echo "</pre></div>";
-                    echo "<div style=\"min-height:45px; padding:15px; font-size:15px; background-color:#ff0;\">value: <pre>"; print_r($value); echo "</pre></div>";
+            $logger_request->setContainer(app());
+            $logger_request->validate();
 
-                }
+            $this->store( $logger_request );
 
-            });
+        }
 
-        });
+        $this->_calculate_tempo();
+        return $this->_redirect();
 
     }
 

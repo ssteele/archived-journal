@@ -12,10 +12,10 @@
 */
 
 Route::get( '', 'LoggerController@index' );
-Route::post( 'new-journal-entry', array( 'uses' => 'LoggerController@store' ) );
+Route::post( 'handle-journal-entry', array( 'uses' => 'LoggerController@store' ) );
 
 Route::get( 'upload', 'LoggerController@upload' );
-Route::post( 'new-upload', array( 'uses' => 'LoggerController@bulk_store' ) );
+Route::post( 'handle-upload', array( 'uses' => 'LoggerController@bulk_store' ) );
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
