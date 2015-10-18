@@ -1,7 +1,7 @@
 <?php namespace App\Custom;
 
 
-class WeightedAverageTempo {
+class TempoAverage {
 
 
     private $_tempo;
