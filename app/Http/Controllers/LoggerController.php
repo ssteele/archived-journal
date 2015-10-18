@@ -115,7 +115,7 @@ class LoggerController extends Controller {
 
         // redirect
         return redirect( '' )->with([
-            'flash_message' => 'Entry Logged: ' . $average,
+            'flash_message' => $average,
         ]);
 
     }

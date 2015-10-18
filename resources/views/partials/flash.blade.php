@@ -1,8 +1,10 @@
 @if ( Session::has( 'flash_message' ) )
 
-    <div class="alert alert-success">
+    <div class="alert alert-success center">
 
-        {{ Session::get( 'flash_message' ) }}
+        <p class="average-tempo text-center">
+            {{ Session::get( 'flash_message' ) }}
+        </p>
 
     </div>
 
