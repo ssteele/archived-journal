@@ -22,7 +22,8 @@ class LogDates {
 
         $this->dates_submitted = \DB::table( 'loggers' )
             ->select( 'date' )
-            ->orderBy('date', 'desc')
+            ->where( 'user_id', \Auth::user()->id )
+            ->orderBy( 'date', 'desc' )
             ->take( $this->date_limit )
             ->get();
 

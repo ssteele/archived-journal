@@ -65,7 +65,10 @@ class TempoAverage {
 
             for ( $i=$this->_step['start'] ; $i<=$this->_step['end'] ; $i++ ) {
 
-                $this->_total += $this->_tempo[$i];
+                // count as 0 if nonexistent
+                $tempo = ( isset( $this->_tempo[$i] ) ) ? $this->_tempo[$i] : 0;
+
+                $this->_total += $tempo;
                 $this->_days++;
 
             }

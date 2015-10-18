@@ -26,6 +26,7 @@ class Tempo {
 
         $this->_raw_data = \DB::table( 'loggers' )
             ->select( 'tempo' )
+            ->where( 'user_id', \Auth::user()->id )
             ->orderBy( 'date', 'desc' )
             ->take( $this->date_limit )
             ->get();
