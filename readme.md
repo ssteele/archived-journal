@@ -32,21 +32,23 @@ MAIL_USERNAME=null
 MAIL_PASSWORD=null
 ```
 
+Now back to the command line:
+
 ```bash
 `composer install`                              # install dependencies
 `php artisan migrate`                           # create database tables
 `php artisan serve --port=8080`                 # serve the site
 ```
 
-Register by browsing here: http://localhost:8080/auth/register
+Register by browsing here: [http://localhost:8080/auth/register](http://localhost:8080/auth/register)
 
 ## Use
 
-You can host multiple users. Once logged in, a user can add journal entries one at a time (http://localhost:8080) or upload a CSV (http://localhost:8080/upload) using the format below:
+You can host multiple users. Once logged in, a user can add journal entries [one at a time](http://localhost:8080) or you can [bulk upload a CSV](http://localhost:8080/upload) using the format below:
 
 ```csv
 Date|Tempo|Entry
-01.01.15|0|My entry for January 1, 2016
-01.02.15|0|Wow, yesterday was busy!
-01.03.15|0|...another entry
+01.01.16|0|My entry for January 1, 2016
+01.02.16|0|Wow, yesterday was busy!
+01.03.16|0|...another entry
 ```
