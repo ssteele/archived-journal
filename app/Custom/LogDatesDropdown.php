@@ -13,7 +13,7 @@ class LogDatesDropdown {
      */
     public function __construct( LogDates $log_dates ) {
 
-        $this->_date_limit = $log_dates->date_limit;;
+        $this->_date_limit = $log_dates->date_limit;
         $this->_dates_submitted = $log_dates->dates_submitted;
 
     }
@@ -45,7 +45,7 @@ class LogDatesDropdown {
 
         $options = '<option value="NULL"></option>';
 
-        for ( $i=1 ; $i<=$this->_date_limit ; $i++ ) {
+        for ( $i=0 ; $i<$this->_date_limit ; $i++ ) {
 
             // is valid unlogged date?
             $value = $this->_populate_unlogged_dates( $i );
