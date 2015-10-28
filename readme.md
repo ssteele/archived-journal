@@ -35,9 +35,9 @@ MAIL_PASSWORD=null
 Now back to the command line:
 
 ```bash
-`composer install`                              # install dependencies
-`php artisan migrate`                           # create database tables
-`php artisan serve --port=8080`                 # serve the site
+composer install                                # install dependencies
+php artisan migrate                             # create database tables
+php artisan serve --port=8080                   # serve the site
 ```
 
 Register by browsing here: [http://localhost:8080/auth/register](http://localhost:8080/auth/register)
