@@ -1,6 +1,6 @@
 ##Journal
 
-A simple journal application built on Laravel 5
+*A simple journal application built on Laravel 5*
 
 ###Setup
 
