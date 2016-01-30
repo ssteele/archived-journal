@@ -37,14 +37,14 @@ Now back to the command line:
 ```bash
 composer install                                # install dependencies
 php artisan migrate                             # create database tables
-php artisan serve --port=8080                   # serve the site
+php artisan serve --port=2222                   # serve the site
 ```
 
-Register by browsing here: [http://localhost:8080/auth/register](http://localhost:8080/auth/register)
+Register by browsing here: [http://localhost:2222/auth/register](http://localhost:2222/auth/register)
 
 ###Use
 
-You can host multiple users. Once logged in, a user can add journal entries [one at a time](http://localhost:8080) or you can [bulk upload a CSV](http://localhost:8080/upload) using the format below:
+You can host multiple users. Once logged in, a user can add journal entries [one at a time](http://localhost:2222) or you can [bulk upload a CSV](http://localhost:2222/upload) using the format below:
 
 ```csv
 Date|Tempo|Entry
