@@ -36,8 +36,10 @@ Now back to the command line:
 
 ```bash
 composer install                                # install dependencies
+composer update                                 # update dependencies
 php artisan migrate                             # create database tables
 php artisan serve --port=2222                   # serve the site
+/Applications/MAMP/bin/php/php5.6.10/bin/php    # alternative php lib (recently wiped homebrew)
 ```
 
 Register by browsing here: [http://localhost:2222/auth/register](http://localhost:2222/auth/register)
