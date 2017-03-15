@@ -1,8 +1,8 @@
-##Journal
+## Journal
 
 *A simple journal application built on Laravel 5*
 
-###Setup
+### Setup
 
 Create a database and a user with the proper privileges to initialize tables. Once it's running, the usual privileges should suffice: index, select, insert, update, delete.
 
@@ -44,7 +44,7 @@ php artisan serve --port=2222                   # serve the site
 
 Register by browsing here: [http://localhost:2222/auth/register](http://localhost:2222/auth/register)
 
-###Use
+### Use
 
 You can host multiple users. Once logged in, a user can add journal entries [one at a time](http://localhost:2222) or you can [bulk upload a CSV](http://localhost:2222/upload) using the format below:
 
