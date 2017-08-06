@@ -39,7 +39,6 @@ composer install                                # install dependencies
 composer update                                 # update dependencies
 php artisan migrate                             # create database tables
 php artisan serve --port=2222                   # serve the site
-/Applications/MAMP/bin/php/php7.0.13/bin/php artisan serve --port=2222
 ```
 
 Register by browsing here: [http://localhost:2222/auth/register](http://localhost:2222/auth/register)
