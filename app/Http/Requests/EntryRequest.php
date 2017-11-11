@@ -1,19 +1,18 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-
-class UploadRequest extends Request {
-
+class EntryRequest extends Request
+{
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize() {
-
+    public function authorize()
+    {
         return true;
-
     }
 
     /**
@@ -21,12 +20,11 @@ class UploadRequest extends Request {
      *
      * @return array
      */
-    public function rules() {
-
+    public function rules()
+    {
         return [
-            'csv' => 'required',
+            'tempo' => 'required | numeric',
+            'date'  => 'required | date',
         ];
-
     }
-
 }

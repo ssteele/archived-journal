@@ -1,4 +1,5 @@
-<?php namespace App;
+<?php
+namespace App;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -6,8 +7,8 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
-
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
     use Authenticatable, CanResetPassword;
 
     /**
@@ -33,13 +34,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     /**
-     * Define the relationship between two eloquent models: user & logger
+     * Define the relationship between two eloquent models: User & Entry
      */
-    public function logger() {
-
-        return $this->hasMany( 'App\Logger' );
-
+    public function entry()
+    {
+        return $this->hasMany('App\Entry');
     }
-
-
 }

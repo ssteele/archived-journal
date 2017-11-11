@@ -11,11 +11,11 @@
 |
 */
 
-Route::get( '', 'LoggerController@index' );
-Route::post( 'handle-journal-entry', array( 'uses' => 'LoggerController@store' ) );
+Route::get('', 'EntryController@index');
+Route::post('handle-journal-entry', ['uses' => 'EntryController@store']);
 
-Route::get( 'upload', 'LoggerController@upload' );
-Route::post( 'handle-upload', array( 'uses' => 'LoggerController@bulk_store' ) );
+Route::get('upload', 'EntryController@upload');
+Route::post('handle-upload', ['uses' => 'EntryController@bulk_store']);
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
