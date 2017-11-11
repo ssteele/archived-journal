@@ -7,7 +7,6 @@ class Tempo
     public $date_limit;
     private $_raw_data;
 
-
     /**
      * Construct
      * @param integer $date_limit    Number of days back to fetch
@@ -16,7 +15,6 @@ class Tempo
     {
         $this->date_limit = $date_limit;
     }
-
 
     /**
      * Fetch data from the DB
@@ -31,7 +29,6 @@ class Tempo
             ->get();
     }
 
-
     /**
      * Make the data easier to consume
      */
@@ -44,7 +41,6 @@ class Tempo
         }
     }
 
-
     /**
      * Public access method used by the site
      * @return object    Tempo
@@ -56,7 +52,6 @@ class Tempo
 
         return $this;
     }
-
 
     /**
      * Public access method used for unit tests

@@ -32,7 +32,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
-
     /**
      * Define the relationship between two eloquent models: User & Entry
      */
