@@ -1,8 +1,8 @@
-<?php namespace App\Custom;
+<?php
+namespace App\Custom;
 
-class Tempo {
-
-
+class Tempo
+{
     public $data;
     public $date_limit;
     private $_raw_data;
@@ -12,39 +12,36 @@ class Tempo {
      * Construct
      * @param integer $date_limit    Number of days back to fetch
      */
-    public function __construct( $date_limit ) {
-
+    public function __construct($date_limit)
+    {
         $this->date_limit = $date_limit;
-
     }
 
 
     /**
      * Fetch data from the DB
      */
-    private function _query_db() {
-
-        $this->_raw_data = \DB::table( 'loggers' )
-            ->select( 'tempo' )
-            ->where( 'user_id', \Auth::user()->id )
-            ->orderBy( 'date', 'desc' )
-            ->take( $this->date_limit )
+    private function _query_db()
+    {
+        $this->_raw_data = \DB::table('entries')
+            ->select('tempo')
+            ->where('user_id', \Auth::user()->id)
+            ->orderBy('date', 'desc')
+            ->take($this->date_limit)
             ->get();
-
     }
 
 
     /**
      * Make the data easier to consume
      */
-    private function _unpack() {
-
+    private function _unpack()
+    {
         $this->data = [];
 
-        foreach ( $this->_raw_data as $data ) {
+        foreach ($this->_raw_data as $data) {
             $this->data[] = $data->tempo;
         }
-
     }
 
 
@@ -52,13 +49,12 @@ class Tempo {
      * Public access method used by the site
      * @return object    Tempo
      */
-    public function get() {
-
+    public function get()
+    {
         $this->_query_db();
         $this->_unpack();
 
         return $this;
-
     }
 
 
@@ -66,13 +62,11 @@ class Tempo {
      * Public access method used for unit tests
      * @return object    Tempo
      */
-    public function mock( $data ) {
-
+    public function mock($data)
+    {
         $this->_raw_data = $data;
         $this->_unpack();
 
         return $this;
-
     }
-
 }

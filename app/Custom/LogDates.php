@@ -1,8 +1,8 @@
-<?php namespace App\Custom;
+<?php
+namespace App\Custom;
 
-class LogDates {
-
-
+class LogDates
+{
     public $date_limit;
     public $dates_submitted;
 
@@ -11,22 +11,20 @@ class LogDates {
      * Construct
      * @param integer $date_limit    Number of days back to fetch
      */
-    public function __construct( $date_limit ) {
-
+    public function __construct($date_limit)
+    {
         $this->date_limit = $date_limit;
-
     }
 
 
-    private function _query_db() {
-
-        $this->dates_submitted = \DB::table( 'loggers' )
-            ->select( 'date' )
-            ->where( 'user_id', \Auth::user()->id )
-            ->orderBy( 'date', 'desc' )
-            ->take( $this->date_limit )
+    private function _query_db()
+    {
+        $this->dates_submitted = \DB::table('entries')
+            ->select('date')
+            ->where('user_id', \Auth::user()->id)
+            ->orderBy('date', 'desc')
+            ->take($this->date_limit)
             ->get();
-
     }
 
 
@@ -34,11 +32,10 @@ class LogDates {
      * Public access method used by the site
      * @return object    LogDates
      */
-    public function get() {
-
+    public function get()
+    {
         $this->_query_db();
         return $this;
-
     }
 
 
@@ -46,11 +43,9 @@ class LogDates {
      * Public access method used for unit tests
      * @return object    LogDates
      */
-    public function mock( $data ) {
-
+    public function mock($data)
+    {
         $this->dates_submitted = $data;
         return $this;
-
     }
-
 }
