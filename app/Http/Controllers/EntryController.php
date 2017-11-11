@@ -16,7 +16,6 @@ class EntryController extends Controller
     private $_csv_rows = [];
     private $_csv_counter = 0;
 
-
     /**
      * Create a new controller instance
      *
@@ -26,7 +25,6 @@ class EntryController extends Controller
     {
         $this->middleware('auth');
     }
-
 
     /**
      * Render the journal logging form
@@ -43,7 +41,6 @@ class EntryController extends Controller
         return view('entry', compact('dates'));
     }
 
-
     /**
      * Render the bulk CSV upload form
      *
@@ -53,7 +50,6 @@ class EntryController extends Controller
     {
         return view('entry-upload');
     }
-
 
     /**
      * Calculate recent activity
@@ -65,7 +61,6 @@ class EntryController extends Controller
         $average_tempo = new TempoAverage($tempo->get());
         $this->_average = $average_tempo->calculate();
     }
-
 
     /**
      * Redirect and flash recent activity
@@ -79,7 +74,6 @@ class EntryController extends Controller
             'flash_message' => $this->_average,
         ]);
     }
-
 
     /**
      * Save a journal entry
@@ -98,7 +92,6 @@ class EntryController extends Controller
         }
     }
 
-
     /**
      * Collect CSV upload rows
      * ...maatwebsite/excel package is over-encapsulated
@@ -113,7 +106,6 @@ class EntryController extends Controller
         $this->_csv_counter++;
     }
 
-
     /**
      * Use maatwebsite/excel package to extract CSV data
      * @param  object $csv_upload    File upload
@@ -126,7 +118,6 @@ class EntryController extends Controller
             });
         });
     }
-
 
     /**
      * Save several journal entries

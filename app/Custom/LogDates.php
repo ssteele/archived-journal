@@ -6,7 +6,6 @@ class LogDates
     public $date_limit;
     public $dates_submitted;
 
-
     /**
      * Construct
      * @param integer $date_limit    Number of days back to fetch
@@ -15,7 +14,6 @@ class LogDates
     {
         $this->date_limit = $date_limit;
     }
-
 
     private function _query_db()
     {
@@ -27,7 +25,6 @@ class LogDates
             ->get();
     }
 
-
     /**
      * Public access method used by the site
      * @return object    LogDates
@@ -37,7 +34,6 @@ class LogDates
         $this->_query_db();
         return $this;
     }
-
 
     /**
      * Public access method used for unit tests
