@@ -16,7 +16,6 @@ class Entry extends Model
         'date',
     ];
 
-
     /**
      * Define the relationship between two eloquent models: Entry & User
      */
