@@ -1,17 +1,16 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Logger;
+use App\Entry;
 use App\Custom\LogDates;
 use App\Custom\LogDatesDropdown;
 use App\Custom\Tempo;
 use App\Custom\TempoAverage;
-use App\Http\Requests\LoggerRequest;
-use App\Http\Requests\UploadRequest;
+use App\Http\Requests\EntryRequest;
+use App\Http\Requests\EntryUploadRequest;
 
-
-class LoggerController extends Controller {
-
-
+class EntryController extends Controller
+{
     private $_date_limit = 28;
     private $_average = 0;
     private $_csv_rows = [];
@@ -23,10 +22,9 @@ class LoggerController extends Controller {
      *
      * @return void
      */
-    public function __construct() {
-
+    public function __construct()
+    {
         $this->middleware('auth');
-
     }
 
 
@@ -35,15 +33,14 @@ class LoggerController extends Controller {
      *
      * @return Response
      */
-    public function index() {
-
+    public function index()
+    {
         // get unlogged dates
-        $log_dates = new LogDates( $this->_date_limit );
-        $log_dates_dropdown = new LogDatesDropdown( $log_dates->get() );
+        $log_dates = new LogDates($this->_date_limit);
+        $log_dates_dropdown = new LogDatesDropdown($log_dates->get());
         $dates = $log_dates_dropdown->create();
 
-        return view( 'logger', compact( 'dates' ) );
-
+        return view('entry', compact('dates'));
     }
 
 
@@ -52,23 +49,21 @@ class LoggerController extends Controller {
      *
      * @return Response
      */
-    public function upload() {
-
-        return view( 'upload' );
-
+    public function upload()
+    {
+        return view('entry-upload');
     }
 
 
     /**
      * Calculate recent activity
      */
-    private function _calculate_tempo() {
-
+    private function _calculate_tempo()
+    {
         // calculate tempo
-        $tempo = new Tempo( $this->_date_limit );
-        $average_tempo = new TempoAverage( $tempo->get() );
+        $tempo = new Tempo($this->_date_limit);
+        $average_tempo = new TempoAverage($tempo->get());
         $this->_average = $average_tempo->calculate();
-
     }
 
 
@@ -77,13 +72,12 @@ class LoggerController extends Controller {
      *
      * @return Response
      */
-    private function _redirect() {
-
+    private function _redirect()
+    {
         // redirect and flash calculated tempo
-        return redirect( '' )->with([
+        return redirect('')->with([
             'flash_message' => $this->_average,
         ]);
-
     }
 
 
@@ -92,19 +86,16 @@ class LoggerController extends Controller {
      *
      * @return Response
      */
-    public function store( LoggerRequest $request ) {
-
+    public function store(EntryRequest $request)
+    {
         // save
-        $logger = new Logger( $request->all() );
-        \Auth::user()->logger()->save( $logger );
+        $entry = new Entry($request->all());
+        \Auth::user()->entry()->save($entry);
 
-        if ( is_null( $request->bulk ) ) {
-
+        if (is_null($request->bulk)) {
             $this->_calculate_tempo();
             return $this->_redirect();
-
         }
-
     }
 
 
@@ -113,14 +104,13 @@ class LoggerController extends Controller {
      * ...maatwebsite/excel package is over-encapsulated
      * @param  array $row    CSV row
      */
-    private function _collect_csv_row( $row ) {
-
+    private function _collect_csv_row($row)
+    {
         $this->_csv_rows[$this->_csv_counter]['date'] = $row['date'];
         $this->_csv_rows[$this->_csv_counter]['tempo'] = $row['tempo'];
         $this->_csv_rows[$this->_csv_counter]['entry'] = $row['entry'];
 
         $this->_csv_counter++;
-
     }
 
 
@@ -128,14 +118,12 @@ class LoggerController extends Controller {
      * Use maatwebsite/excel package to extract CSV data
      * @param  object $csv_upload    File upload
      */
-    private function _extract_csv_data( $csv_upload ) {
-
-        $file = \Excel::load( $csv_upload, function( $reader ) {
-
-            $reader->each( function( $row ) {
-                $this->_collect_csv_row( $row );
+    private function _extract_csv_data($csv_upload)
+    {
+        $file = \Excel::load($csv_upload, function($reader) {
+            $reader->each(function($row) {
+                $this->_collect_csv_row($row);
             });
-
         });
     }
 
@@ -145,39 +133,35 @@ class LoggerController extends Controller {
      *
      * @return Response
      */
-    public function bulk_store( UploadRequest $request ) {
+    public function bulk_store(EntryUploadRequest $request)
+    {
+        $csv = $request->input('csv');
 
-        $csv = $request->input( 'csv' );
-
-        $csv_upload = $request->file( 'csv' )->move(
+        $csv_upload = $request->file('csv')->move(
             base_path() . '/public/', $csv
         );
 
-        $this->_extract_csv_data( $csv_upload );
+        $this->_extract_csv_data($csv_upload);
 
-        foreach ( $this->_csv_rows as $row ) {
+        foreach ($this->_csv_rows as $row) {
+            // pass through entry request validation/save methods
+            $entry_request = new EntryRequest;
 
-            // pass through logger request validation/save methods
-            $logger_request = new LoggerRequest;
-
-            $logger_request->replace([
+            $entry_request->replace([
                 'user'  => \Auth::user(),
-                'date'  => \Carbon\Carbon::createFromFormat( 'm.d.y', $row['date'] )->toDateTimeString(),
+                'date'  => \Carbon\Carbon::createFromFormat('m.d.y', $row['date'])->toDateTimeString(),
                 'tempo' => $row['tempo'],
                 'entry' => $row['entry'],
                 'bulk'  => true,
             ]);
 
-            $logger_request->setContainer(app());
-            $logger_request->validate();
+            $entry_request->setContainer(app());
+            $entry_request->validate();
 
-            $this->store( $logger_request );
-
+            $this->store($entry_request);
         }
 
         $this->_calculate_tempo();
         return $this->_redirect();
-
     }
-
 }

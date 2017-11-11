@@ -1,10 +1,10 @@
-{!! Form::open( ['action' => 'LoggerController@store'] ) !!}
+{!! Form::open(['action' => 'EntryController@store']) !!}
 
     <fieldset data-tabs="false">
 
         <div class="form-group">
 
-            {!! Form::label( 'date', 'Date' ) !!}
+            {!! Form::label('date', 'Date') !!}
 
             <div class="dropdown-group">
 
@@ -18,11 +18,11 @@
 
         <div class="form-group">
 
-            {!! Form::label( 'tempo', 'Tempo', ['class' => 'control-label'] ) !!}
+            {!! Form::label('tempo', 'Tempo', ['class' => 'control-label']) !!}
 
             <div class="input-group">
 
-                {!! Form::input( 'number', 'tempo', null, ['class' => 'form-control', 'min' => 0, 'step' => 1] ) !!}
+                {!! Form::input('number', 'tempo', null, ['class' => 'form-control', 'min' => 0, 'step' => 1]) !!}
                 <span class="input-group-addon">Standard Units</span>
 
             </div>
@@ -31,22 +31,22 @@
 
         <div class="form-group">
 
-            {!! Form::label( 'entry', 'Entry', ['class' => 'control-label'] ) !!}
-            {!! Form::textarea( 'entry', null, ['class' => 'form-control'] ) !!}
+            {!! Form::label('entry', 'Entry', ['class' => 'control-label']) !!}
+            {!! Form::textarea('entry', null, ['class' => 'form-control']) !!}
 
         </div>
 
         <div class="form-group">
 
-            {!! Form::submit( 'Log', ['class' => 'btn btn-primary form-control'] ) !!}
+            {!! Form::submit('Log', ['class' => 'btn btn-primary form-control']) !!}
 
         </div>
 
-        @if ( $errors->any() )
+        @if ($errors->any())
 
             <ul class="alert alert-danger">
 
-                @foreach ( $errors->all() as $error )
+                @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
 
