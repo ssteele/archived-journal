@@ -8,6 +8,7 @@ use App\Custom\Tempo;
 use App\Custom\TempoAverage;
 use App\Http\Requests\EntryRequest;
 use App\Http\Requests\EntryUploadRequest;
+use Carbon\Carbon;
 
 class EntryController extends Controller
 {
@@ -138,7 +139,7 @@ class EntryController extends Controller
 
             $entryRequest->replace([
                 'user'  => \Auth::user(),
-                'date'  => \Carbon\Carbon::createFromFormat('m.d.y', $row['date'])->toDateTimeString(),
+                'date'  => Carbon::createFromFormat('m.d.y', $row['date'])->toDateTimeString(),
                 'tempo' => $row['tempo'],
                 'entry' => $row['entry'],
                 'bulk'  => true,
