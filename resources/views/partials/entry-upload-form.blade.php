@@ -1,5 +1,5 @@
 {!! Form::open([
-    'action' => 'EntryController@bulk_store',
+    'action' => 'EntryController@bulkStore',
     'files'  => true,
 ]) !!}
 

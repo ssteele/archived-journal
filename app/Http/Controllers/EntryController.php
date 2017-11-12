@@ -11,10 +11,10 @@ use App\Http\Requests\EntryUploadRequest;
 
 class EntryController extends Controller
 {
-    private $_date_limit = 28;
-    private $_average = 0;
-    private $_csv_rows = [];
-    private $_csv_counter = 0;
+    private $dateLimit = 28;
+    private $average = 0;
+    private $csvRows = [];
+    private $csvCounter = 0;
 
     /**
      * Create a new controller instance
@@ -34,9 +34,9 @@ class EntryController extends Controller
     public function index()
     {
         // get unlogged dates
-        $log_dates = new LogDates($this->_date_limit);
-        $log_dates_dropdown = new LogDatesDropdown($log_dates->get());
-        $dates = $log_dates_dropdown->create();
+        $logDates = new LogDates($this->dateLimit);
+        $logDatesDropdown = new LogDatesDropdown($logDates->get());
+        $dates = $logDatesDropdown->create();
 
         return view('entry', compact('dates'));
     }
@@ -54,12 +54,12 @@ class EntryController extends Controller
     /**
      * Calculate recent activity
      */
-    private function _calculate_tempo()
+    private function calculateTempo()
     {
         // calculate tempo
-        $tempo = new Tempo($this->_date_limit);
-        $average_tempo = new TempoAverage($tempo->get());
-        $this->_average = $average_tempo->calculate();
+        $tempo = new Tempo($this->dateLimit);
+        $averageTempo = new TempoAverage($tempo->get());
+        $this->average = $averageTempo->calculate();
     }
 
     /**
@@ -67,11 +67,11 @@ class EntryController extends Controller
      *
      * @return Response
      */
-    private function _redirect()
+    private function redirect()
     {
         // redirect and flash calculated tempo
         return redirect('')->with([
-            'flash_message' => $this->_average,
+            'flash_message' => $this->average,
         ]);
     }
 
@@ -87,8 +87,8 @@ class EntryController extends Controller
         \Auth::user()->entry()->save($entry);
 
         if (is_null($request->bulk)) {
-            $this->_calculate_tempo();
-            return $this->_redirect();
+            $this->calculateTempo();
+            return $this->redirect();
         }
     }
 
@@ -97,24 +97,24 @@ class EntryController extends Controller
      * ...maatwebsite/excel package is over-encapsulated
      * @param  array $row    CSV row
      */
-    private function _collect_csv_row($row)
+    private function collectCsvRow($row)
     {
-        $this->_csv_rows[$this->_csv_counter]['date'] = $row['date'];
-        $this->_csv_rows[$this->_csv_counter]['tempo'] = $row['tempo'];
-        $this->_csv_rows[$this->_csv_counter]['entry'] = $row['entry'];
+        $this->csvRows[$this->csvCounter]['date'] = $row['date'];
+        $this->csvRows[$this->csvCounter]['tempo'] = $row['tempo'];
+        $this->csvRows[$this->csvCounter]['entry'] = $row['entry'];
 
-        $this->_csv_counter++;
+        $this->csvCounter++;
     }
 
     /**
      * Use maatwebsite/excel package to extract CSV data
-     * @param  object $csv_upload    File upload
+     * @param  object $csvUpload    File upload
      */
-    private function _extract_csv_data($csv_upload)
+    private function extractCsvData($csvUpload)
     {
-        $file = \Excel::load($csv_upload, function($reader) {
-            $reader->each(function($row) {
-                $this->_collect_csv_row($row);
+        $file = \Excel::load($csvUpload, function ($reader) {
+            $reader->each(function ($row) {
+                $this->collectCsvRow($row);
             });
         });
     }
@@ -124,21 +124,19 @@ class EntryController extends Controller
      *
      * @return Response
      */
-    public function bulk_store(EntryUploadRequest $request)
+    public function bulkStore(EntryUploadRequest $request)
     {
         $csv = $request->input('csv');
 
-        $csv_upload = $request->file('csv')->move(
-            base_path() . '/public/', $csv
-        );
+        $csvUpload = $request->file('csv')->move(base_path() . '/public/', $csv);
 
-        $this->_extract_csv_data($csv_upload);
+        $this->extractCsvData($csvUpload);
 
-        foreach ($this->_csv_rows as $row) {
+        foreach ($this->csvRows as $row) {
             // pass through entry request validation/save methods
-            $entry_request = new EntryRequest;
+            $entryRequest = new EntryRequest;
 
-            $entry_request->replace([
+            $entryRequest->replace([
                 'user'  => \Auth::user(),
                 'date'  => \Carbon\Carbon::createFromFormat('m.d.y', $row['date'])->toDateTimeString(),
                 'tempo' => $row['tempo'],
@@ -146,13 +144,13 @@ class EntryController extends Controller
                 'bulk'  => true,
             ]);
 
-            $entry_request->setContainer(app());
-            $entry_request->validate();
+            $entryRequest->setContainer(app());
+            $entryRequest->validate();
 
-            $this->store($entry_request);
+            $this->store($entryRequest);
         }
 
-        $this->_calculate_tempo();
-        return $this->_redirect();
+        $this->calculateTempo();
+        return $this->redirect();
     }
 }
