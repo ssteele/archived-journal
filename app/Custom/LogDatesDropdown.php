@@ -1,6 +1,8 @@
 <?php
 namespace App\Custom;
 
+use Carbon\Carbon;
+
 class LogDatesDropdown
 {
     private $datesSubmitted;
@@ -13,7 +15,7 @@ class LogDatesDropdown
     public function __construct(LogDates $logDates)
     {
         $this->dateLimit = $logDates->dateLimit;
-        $this->datesSubmitted = $logDates->datesSubmitted;
+        $this->datesSubmitted = array_reverse($logDates->datesSubmitted);
     }
 
     /**
@@ -23,9 +25,12 @@ class LogDatesDropdown
      */
     private function populateUnloggedDates($index)
     {
-        $isLoggedDate = strtotime(date('Y-m-d', time() - (24 * 60 * 60) * $index));
+        $daysAgo = $this->dateLimit - $index;
+        $isLoggedDate = new Carbon($daysAgo . ' days ago');
+
         foreach ($this->datesSubmitted as $objDate) {
-            if ($isLoggedDate == strtotime($objDate->date)) {
+            $candidateDate = new Carbon($objDate->date);
+            if ($isLoggedDate->isSameDay($candidateDate)) {
                 return;
             }
         }
@@ -44,11 +49,11 @@ class LogDatesDropdown
 
         for ($i=0; $i<$this->dateLimit; $i++) {
             // is valid unlogged date?
-            $value = $this->populateUnloggedDates($i);
-            if (! is_null($value)) {
+            $date = $this->populateUnloggedDates($i);
+            if (! is_null($date)) {
                 // if so, add it as an option to the bootstrap dropdown
-                $optionValue = date('Y-m-d', $value);
-                $optionDisplay = date('m.d.y (D)', $value);
+                $optionValue = $date->format('Y-m-d');
+                $optionDisplay = $date->format('m.d.y (D)');
 
                 $options .= '<option value="' . $optionValue . '">' . $optionDisplay . '</option>';
             }
