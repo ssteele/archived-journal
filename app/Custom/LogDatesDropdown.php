@@ -3,17 +3,17 @@ namespace App\Custom;
 
 class LogDatesDropdown
 {
-    private $_dates_submitted;
-    private $_date_limit;
+    private $datesSubmitted;
+    private $dateLimit;
 
     /**
      * Construct
-     * @param integer $date_limit    Number of days back to fetch
+     * @param integer $dateLimit    Number of days back to fetch
      */
-    public function __construct(LogDates $log_dates)
+    public function __construct(LogDates $logDates)
     {
-        $this->_date_limit = $log_dates->date_limit;
-        $this->_dates_submitted = $log_dates->dates_submitted;
+        $this->dateLimit = $logDates->dateLimit;
+        $this->datesSubmitted = $logDates->datesSubmitted;
     }
 
     /**
@@ -21,17 +21,17 @@ class LogDatesDropdown
      * @param  integer $index    Number of days previous to current date
      * @return integer           Valid unlogged dates
      */
-    private function _populate_unlogged_dates($index)
+    private function populateUnloggedDates($index)
     {
-        $is_logged_date = strtotime(date('Y-m-d', time() - (24 * 60 * 60) * $index));
-        foreach ($this->_dates_submitted as $obj_date) {
-            if ($is_logged_date == strtotime($obj_date->date)) {
+        $isLoggedDate = strtotime(date('Y-m-d', time() - (24 * 60 * 60) * $index));
+        foreach ($this->datesSubmitted as $objDate) {
+            if ($isLoggedDate == strtotime($objDate->date)) {
                 return;
             }
         }
 
         // date is not logged, so return it to include in the dropdown
-        return $is_logged_date;
+        return $isLoggedDate;
     }
 
     /**
@@ -42,15 +42,15 @@ class LogDatesDropdown
     {
         $options = '<option value="NULL"></option>';
 
-        for ($i=0; $i<$this->_date_limit; $i++) {
+        for ($i=0; $i<$this->dateLimit; $i++) {
             // is valid unlogged date?
-            $value = $this->_populate_unlogged_dates($i);
+            $value = $this->populateUnloggedDates($i);
             if (! is_null($value)) {
                 // if so, add it as an option to the bootstrap dropdown
-                $option_value = date('Y-m-d', $value);
-                $option_display = date('m.d.y (D)', $value);
+                $optionValue = date('Y-m-d', $value);
+                $optionDisplay = date('m.d.y (D)', $value);
 
-                $options .= '<option value="' . $option_value . '">' . $option_display . '</option>';
+                $options .= '<option value="' . $optionValue . '">' . $optionDisplay . '</option>';
             }
         }
 

@@ -15,7 +15,7 @@ Route::get('', 'EntryController@index');
 Route::post('handle-journal-entry', ['uses' => 'EntryController@store']);
 
 Route::get('upload', 'EntryController@upload');
-Route::post('handle-upload', ['uses' => 'EntryController@bulk_store']);
+Route::post('handle-upload', ['uses' => 'EntryController@bulkStore']);
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
