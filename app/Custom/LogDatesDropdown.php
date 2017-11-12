@@ -25,7 +25,7 @@ class LogDatesDropdown
      */
     private function populateUnloggedDates($index)
     {
-        $daysAgo = $this->dateLimit - $index;
+        $daysAgo = $this->dateLimit - ($index + 1);
         $isLoggedDate = new Carbon($daysAgo . ' days ago');
 
         foreach ($this->datesSubmitted as $objDate) {
