@@ -4,39 +4,39 @@ namespace App\Custom;
 class Tempo
 {
     public $data;
-    public $date_limit;
-    private $_raw_data;
+    public $dateLimit;
+    private $rawData;
 
     /**
      * Construct
-     * @param integer $date_limit    Number of days back to fetch
+     * @param integer $dateLimit    Number of days back to fetch
      */
-    public function __construct($date_limit)
+    public function __construct($dateLimit)
     {
-        $this->date_limit = $date_limit;
+        $this->dateLimit = $dateLimit;
     }
 
     /**
      * Fetch data from the DB
      */
-    private function _query_db()
+    private function queryDb()
     {
-        $this->_raw_data = \DB::table('entries')
+        $this->rawData = \DB::table('entries')
             ->select('tempo')
             ->where('user_id', \Auth::user()->id)
             ->orderBy('date', 'desc')
-            ->take($this->date_limit)
+            ->take($this->dateLimit)
             ->get();
     }
 
     /**
      * Make the data easier to consume
      */
-    private function _unpack()
+    private function unpack()
     {
         $this->data = [];
 
-        foreach ($this->_raw_data as $data) {
+        foreach ($this->rawData as $data) {
             $this->data[] = $data->tempo;
         }
     }
@@ -47,8 +47,8 @@ class Tempo
      */
     public function get()
     {
-        $this->_query_db();
-        $this->_unpack();
+        $this->queryDb();
+        $this->unpack();
 
         return $this;
     }
@@ -59,8 +59,8 @@ class Tempo
      */
     public function mock($data)
     {
-        $this->_raw_data = $data;
-        $this->_unpack();
+        $this->rawData = $data;
+        $this->unpack();
 
         return $this;
     }

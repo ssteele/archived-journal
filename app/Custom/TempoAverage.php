@@ -3,12 +3,12 @@ namespace App\Custom;
 
 class TempoAverage
 {
-    private $_tempo;
-    private $_breakpoints;
-    private $_step;
-    private $_days = 0;
-    private $_total = 0;
-    private $_average = 0;
+    private $tempo;
+    private $breakpoints;
+    private $step;
+    private $days = 0;
+    private $total = 0;
+    private $average = 0;
 
     /**
      * Construct
@@ -16,16 +16,16 @@ class TempoAverage
      */
     public function __construct(Tempo $tempo)
     {
-        $this->_tempo = $tempo->data;
-        $this->_define_breakpoints();
+        $this->tempo = $tempo->data;
+        $this->defineBreakpoints();
     }
 
     /**
      * Set weighted average breakpoints
      */
-    private function _define_breakpoints()
+    private function defineBreakpoints()
     {
-        $this->_breakpoints = [
+        $this->breakpoints = [
             ['weight' => 0.3, 'start' => 0, 'end' => 0],
             ['weight' => 0.25, 'start' => 1, 'end' => 2],
             ['weight' => 0.2, 'start' => 3, 'end' => 6],
@@ -37,32 +37,32 @@ class TempoAverage
     /**
      * Update average using weight, tempo total, and day count
      */
-    private function _average()
+    private function average()
     {
-        $this->_average += ($this->_step['weight'] * $this->_total / $this->_days);
+        $this->average += ($this->step['weight'] * $this->total / $this->days);
     }
 
     /**
      * Step through weight breakpoints and sum averages
      */
-    private function _weighted_average()
+    private function weightedAverage()
     {
-        foreach ($this->_breakpoints as $this->_step) {
-            if ($this->_step['end'] > count($this->_tempo)) {
+        foreach ($this->breakpoints as $this->step) {
+            if ($this->step['end'] > count($this->tempo)) {
                 break;
             }
 
-            $this->_days = $this->_total = 0;
+            $this->days = $this->total = 0;
 
-            for ($i=$this->_step['start']; $i<=$this->_step['end']; $i++) {
+            for ($i=$this->step['start']; $i<=$this->step['end']; $i++) {
                 // count as 0 if nonexistent
-                $tempo = (isset($this->_tempo[$i])) ? $this->_tempo[$i] : 0;
+                $tempo = (isset($this->tempo[$i])) ? $this->tempo[$i] : 0;
 
-                $this->_total += $tempo;
-                $this->_days++;
+                $this->total += $tempo;
+                $this->days++;
             }
 
-            $this->_average();
+            $this->average();
         }
     }
 
@@ -72,7 +72,7 @@ class TempoAverage
      */
     public function calculate()
     {
-        $this->_weighted_average();
-        return round($this->_average, 2);
+        $this->weightedAverage();
+        return round($this->average, 2);
     }
 }
