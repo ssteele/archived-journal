@@ -3,25 +3,25 @@ namespace App\Custom;
 
 class LogDates
 {
-    public $date_limit;
-    public $dates_submitted;
+    public $dateLimit;
+    public $datesSubmitted;
 
     /**
      * Construct
-     * @param integer $date_limit    Number of days back to fetch
+     * @param integer $dateLimit    Number of days back to fetch
      */
-    public function __construct($date_limit)
+    public function __construct($dateLimit)
     {
-        $this->date_limit = $date_limit;
+        $this->dateLimit = $dateLimit;
     }
 
-    private function _query_db()
+    private function queryDb()
     {
-        $this->dates_submitted = \DB::table('entries')
+        $this->datesSubmitted = \DB::table('entries')
             ->select('date')
             ->where('user_id', \Auth::user()->id)
             ->orderBy('date', 'desc')
-            ->take($this->date_limit)
+            ->take($this->dateLimit)
             ->get();
     }
 
@@ -31,7 +31,7 @@ class LogDates
      */
     public function get()
     {
-        $this->_query_db();
+        $this->queryDb();
         return $this;
     }
 
@@ -41,7 +41,7 @@ class LogDates
      */
     public function mock($data)
     {
-        $this->dates_submitted = $data;
+        $this->datesSubmitted = $data;
         return $this;
     }
 }
