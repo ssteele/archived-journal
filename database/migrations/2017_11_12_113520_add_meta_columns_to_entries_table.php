@@ -13,9 +13,12 @@ class AddMetaColumnsToEntriesTable extends Migration
     public function up()
     {
         Schema::table('entries', function (Blueprint $table) {
-            $table->text('feelings')->after('entry');
-            $table->text('health')->after('feelings');
-            $table->text('milestones')->after('health');
+            $table->text('tag')->after('entry');
+            $table->text('mention')->after('tag');
+            $table->text('feeling')->after('mention');
+            $table->text('health')->after('feeling');
+            $table->text('milestone')->after('health');
+            $table->text('idea')->after('milestone');
         });
     }
 
@@ -27,9 +30,12 @@ class AddMetaColumnsToEntriesTable extends Migration
     public function down()
     {
         Schema::table('entries', function (Blueprint $table) {
+            $table->dropColumn('tag');
+            $table->dropColumn('mention');
+            $table->dropColumn('feeling');
             $table->dropColumn('health');
-            $table->dropColumn('feelings');
-            $table->dropColumn('milestones');
+            $table->dropColumn('milestone');
+            $table->dropColumn('idea');
         });
     }
 }
