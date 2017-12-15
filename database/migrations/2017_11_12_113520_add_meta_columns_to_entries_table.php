@@ -12,13 +12,93 @@ class AddMetaColumnsToEntriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('entries', function (Blueprint $table) {
-            $table->text('tag')->after('entry');
-            $table->text('mention')->after('tag');
-            $table->text('feeling')->after('mention');
-            $table->text('health')->after('feeling');
-            $table->text('milestone')->after('health');
-            $table->text('idea')->after('milestone');
+        Schema::create('tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->string('name', 64);
+            $table->timestamps();
+        });
+
+        Schema::create('relations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->string('name', 64);
+            $table->timestamps();
+        });
+
+        Schema::create('marker_categories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->string('name', 64);
+            $table->string('shorthand', 1)->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('markers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->integer('marker_category_id')->unsigned();
+            $table->foreign('marker_category_id')
+                ->references('id')
+                ->on('marker_categories')
+                ->onDelete('cascade');
+            $table->text('marker');
+            $table->timestamps();
+        });
+
+        Schema::create('entry_has_tags', function (Blueprint $table) {
+            $table->integer('entry_id')->unsigned();
+            $table->foreign('entry_id')
+                ->references('id')
+                ->on('entries')
+                ->onDelete('cascade');
+            $table->integer('tag_id')->unsigned();
+            $table->foreign('tag_id')
+                ->references('id')
+                ->on('tags')
+                ->onDelete('cascade');
+        });
+
+        Schema::create('entry_has_mentions', function (Blueprint $table) {
+            $table->integer('entry_id')->unsigned();
+            $table->foreign('entry_id')
+                ->references('id')
+                ->on('entries')
+                ->onDelete('cascade');
+            $table->integer('mention_id')->unsigned();
+            $table->foreign('mention_id')
+                ->references('id')
+                ->on('relations')
+                ->onDelete('cascade');
+        });
+
+        Schema::create('entry_has_markers', function (Blueprint $table) {
+            $table->integer('entry_id')->unsigned();
+            $table->foreign('entry_id')
+                ->references('id')
+                ->on('entries')
+                ->onDelete('cascade');
+            $table->integer('marker_id')->unsigned();
+            $table->foreign('marker_id')
+                ->references('id')
+                ->on('markers')
+                ->onDelete('cascade');
         });
     }
 
@@ -29,13 +109,12 @@ class AddMetaColumnsToEntriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('entries', function (Blueprint $table) {
-            $table->dropColumn('tag');
-            $table->dropColumn('mention');
-            $table->dropColumn('feeling');
-            $table->dropColumn('health');
-            $table->dropColumn('milestone');
-            $table->dropColumn('idea');
-        });
+        Schema::drop('entry_has_markers');
+        Schema::drop('entry_has_tags');
+        Schema::drop('entry_has_mentions');
+        Schema::drop('tags');
+        Schema::drop('relations');
+        Schema::drop('markers');
+        Schema::drop('marker_categories');
     }
 }
