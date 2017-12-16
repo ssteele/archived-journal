@@ -48,10 +48,10 @@ class AddMetaColumnsToEntriesTable extends Migration
 
         Schema::create('markers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')
+            $table->integer('entry_id')->unsigned();
+            $table->foreign('entry_id')
                 ->references('id')
-                ->on('users')
+                ->on('entries')
                 ->onDelete('cascade');
             $table->integer('marker_category_id')->unsigned();
             $table->foreign('marker_category_id')
@@ -87,19 +87,6 @@ class AddMetaColumnsToEntriesTable extends Migration
                 ->on('relations')
                 ->onDelete('cascade');
         });
-
-        Schema::create('entry_has_markers', function (Blueprint $table) {
-            $table->integer('entry_id')->unsigned();
-            $table->foreign('entry_id')
-                ->references('id')
-                ->on('entries')
-                ->onDelete('cascade');
-            $table->integer('marker_id')->unsigned();
-            $table->foreign('marker_id')
-                ->references('id')
-                ->on('markers')
-                ->onDelete('cascade');
-        });
     }
 
     /**
@@ -109,7 +96,6 @@ class AddMetaColumnsToEntriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('entry_has_markers');
         Schema::drop('entry_has_tags');
         Schema::drop('entry_has_mentions');
         Schema::drop('tags');
