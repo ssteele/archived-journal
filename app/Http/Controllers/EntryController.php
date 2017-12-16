@@ -60,7 +60,8 @@ class EntryController extends Controller
         // calculate tempo
         $tempo = new Tempo($this->dateLimit);
         $averageTempo = new TempoAverage($tempo->get());
-        $this->average = $averageTempo->calculate();
+
+        return $averageTempo->calculate();
     }
 
     /**
@@ -68,11 +69,11 @@ class EntryController extends Controller
      *
      * @return Response
      */
-    private function redirect()
+    private function redirect($average)
     {
         // redirect and flash calculated tempo
         return redirect('')->with([
-            'flash_message' => $this->average,
+            'flash_message' => $average,
         ]);
     }
 
@@ -88,8 +89,8 @@ class EntryController extends Controller
         \Auth::user()->entry()->save($entry);
 
         if (is_null($request->bulk)) {
-            $this->calculateTempo();
-            return $this->redirect();
+            $average = $this->calculateTempo();
+            return $this->redirect($average);
         }
     }
 
@@ -128,9 +129,7 @@ class EntryController extends Controller
     public function bulkStore(EntryUploadRequest $request)
     {
         $csv = $request->input('csv');
-
         $csvUpload = $request->file('csv')->move(base_path() . '/public/', $csv);
-
         $this->extractCsvData($csvUpload);
 
         foreach ($this->csvRows as $row) {
