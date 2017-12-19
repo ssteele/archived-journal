@@ -3,42 +3,37 @@
 use App\Custom\Tempo;
 use App\Custom\TempoAverage;
 
-
-class TempoTest extends TestCase {
-
-
-    public function test_phase_1_weighted_calculation() {
-
+class TempoTest extends TestCase
+{
+    public function testPhaseOneWeightedCalculation()
+    {
         $data = [
             (object)(['tempo' => '2']),
         ];
 
-        $tempo = new Tempo( 28 );
-        $tempo_average = new TempoAverage( $tempo->mock( $data ) );
+        $tempo = new Tempo(28);
+        $tempoAverage = new TempoAverage($tempo->mock($data));
 
-        $this->assertEquals( 0.6, $tempo_average->calculate() );
-
+        $this->assertEquals(0.6, $tempoAverage->calculate());
     }
 
-
-    public function test_phase_1_2_weighted_calculation() {
-
+    public function testPhaseOneToTwoWeightedCalculation()
+    {
         $data = [
             (object)(['tempo' => '2']),
             (object)(['tempo' => '1']),
             (object)(['tempo' => '5']),
         ];
 
-        $tempo = new Tempo( 28 );
-        $tempo_average = new TempoAverage( $tempo->mock( $data ) );
+        $tempo = new Tempo(28);
+        $tempoAverage = new TempoAverage($tempo->mock($data));
 
-        $this->assertEquals( 1.35, $tempo_average->calculate() );
-
+        $this->assertEquals(1.35, $tempoAverage->calculate());
     }
 
 
-    public function test_phase_1_3_weighted_calculation() {
-
+    public function testPhaseOneToThreeWeightedCalculation()
+    {
         $data = [
             (object)(['tempo' => '2']),
             (object)(['tempo' => '1']),
@@ -49,16 +44,15 @@ class TempoTest extends TestCase {
             (object)(['tempo' => '1']),
         ];
 
-        $tempo = new Tempo( 28 );
-        $tempo_average = new TempoAverage( $tempo->mock( $data ) );
+        $tempo = new Tempo(28);
+        $tempoAverage = new TempoAverage($tempo->mock($data));
 
-        $this->assertEquals( 3.35, $tempo_average->calculate() );
-
+        $this->assertEquals(3.35, $tempoAverage->calculate());
     }
 
 
-    public function test_phase_1_4_weighted_calculation() {
-
+    public function testPhaseOneToFourWeightedCalculation()
+    {
         $data = [
             (object)(['tempo' => '2']),
             (object)(['tempo' => '1']),
@@ -76,16 +70,15 @@ class TempoTest extends TestCase {
             (object)(['tempo' => '1']),
         ];
 
-        $tempo = new Tempo( 28 );
-        $tempo_average = new TempoAverage( $tempo->mock( $data ) );
+        $tempo = new Tempo(28);
+        $tempoAverage = new TempoAverage($tempo->mock($data));
 
-        $this->assertEquals( 3.93, $tempo_average->calculate() );
-
+        $this->assertEquals(3.93, $tempoAverage->calculate());
     }
 
 
-    public function test_1_5_weighted_calculation() {
-
+    public function testPhaseOneToFiveWeightedCalculation()
+    {
         $data = [
             (object)(['tempo' => '2']),
             (object)(['tempo' => '1']),
@@ -117,11 +110,9 @@ class TempoTest extends TestCase {
             (object)(['tempo' => '8']),
         ];
 
-        $tempo = new Tempo( 28 );
-        $tempo_average = new TempoAverage( $tempo->mock( $data ) );
+        $tempo = new Tempo(28);
+        $tempoAverage = new TempoAverage($tempo->mock($data));
 
-        $this->assertEquals( 4.65, $tempo_average->calculate() );
-
+        $this->assertEquals(4.65, $tempoAverage->calculate());
     }
-
 }
