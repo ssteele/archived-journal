@@ -1,14 +1,16 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Entry;
+use App\Custom\Annotations\Handler;
 use App\Custom\LogDates;
 use App\Custom\LogDatesDropdown;
 use App\Custom\Tempo;
 use App\Custom\TempoAverage;
+use App\Entry;
 use App\Http\Requests\EntryRequest;
 use App\Http\Requests\EntryUploadRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
 {
@@ -78,16 +80,33 @@ class EntryController extends Controller
     }
 
     /**
-     * Save a journal entry
+     * Save a journal entry and it's annotations
      *
      * @return Response
      */
-    public function store(EntryRequest $request)
+    public function store(EntryRequest $request, Handler $annotationsHandler)
     {
-        // save
-        $entry = new Entry($request->all());
-        \Auth::user()->entry()->save($entry);
+        // get authenticated user
+        $user = Auth::user();
 
+        // save entry
+        // $entry = new Entry($request->all());
+        // $persistedEntry = $user->entry()->save($entry);
+
+        // save annotations
+        // $annotationsHandler->setUserId($user->getAttribute('id'));
+        // $annotationsHandler->setEntryId($persistedEntry->getAttribute('id'));
+        // $annotationsHandler->setEntry($persistedEntry->getAttribute('entry'));
+
+        $annotationsHandler->setUserId(1);
+        $annotationsHandler->setEntryId(6);
+        $annotationsHandler->setEntry($request->input('entry'));
+
+        $annotationsHandler->extract();
+        die;
+        $annotationsHandler->save();
+
+        // flash tempo
         if (is_null($request->bulk)) {
             $average = $this->calculateTempo();
             return $this->redirect($average);
@@ -137,7 +156,7 @@ class EntryController extends Controller
             $entryRequest = new EntryRequest;
 
             $entryRequest->replace([
-                'user'  => \Auth::user(),
+                'user'  => Auth::user(),
                 'date'  => Carbon::createFromFormat('m.d.y', $row['date'])->toDateTimeString(),
                 'tempo' => $row['tempo'],
                 'entry' => $row['entry'],
