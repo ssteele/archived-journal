@@ -39,4 +39,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\Entry');
     }
+
+    /**
+     * Define the relationship between two eloquent models: User & Tag
+     */
+    public function tag()
+    {
+        return $this->hasMany('App\Tag');
+    }
 }

@@ -1,9 +1,12 @@
 <?php
 namespace App\Custom\Annotations;
 
+use App\User;
+use App\Tag;
+
 class Handler
 {
-    private $userId;
+    private $user;
     private $entryId;
     private $entry;
 
@@ -11,14 +14,14 @@ class Handler
     private $mentions;
     private $markers = [];
 
-    public function setUserId($userId)
+    public function setUser(User $user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
     public function setEntryId($entryId)
@@ -126,8 +129,8 @@ class Handler
     public function extract()
     {
         $this->extractTags();
-        $this->extractMentions();
-        $this->extractMarkers();
+        // $this->extractMentions();
+        // $this->extractMarkers();
     }
 
     /**
@@ -136,8 +139,11 @@ class Handler
      */
     public function save()
     {
-        echo "<pre>this->tags: "; var_dump($this->tags); echo "</pre>\n";
-        echo "<pre>this->mentions: "; var_dump($this->mentions); echo "</pre>\n";
-        echo "<pre>this->markers: "; var_dump($this->markers); echo "</pre>\n";
+        foreach ($this->tags as $tag) {
+            Tag::firstOrCreate(['user_id' => $this->user->id, 'name' => $tag]);
+        }
+
+        // echo "<pre>this->mentions: "; var_dump($this->mentions); echo "</pre>\n";
+        // echo "<pre>this->markers: "; var_dump($this->markers); echo "</pre>\n";
     }
 }

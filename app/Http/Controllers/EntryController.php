@@ -98,13 +98,13 @@ class EntryController extends Controller
         // $annotationsHandler->setEntryId($persistedEntry->getAttribute('id'));
         // $annotationsHandler->setEntry($persistedEntry->getAttribute('entry'));
 
-        $annotationsHandler->setUserId(1);
+        $annotationsHandler->setUser($user);
         $annotationsHandler->setEntryId(6);
         $annotationsHandler->setEntry($request->input('entry'));
 
         $annotationsHandler->extract();
-        die;
         $annotationsHandler->save();
+        die;
 
         // flash tempo
         if (is_null($request->bulk)) {

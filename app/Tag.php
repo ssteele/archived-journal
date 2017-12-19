@@ -1,33 +1,34 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entry extends Model
+class Tag extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'entries';
+    protected $table = 'tags';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'date', 'tempo', 'entry'];
+    protected $fillable = ['user_id', 'name'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $dates = ['date'];
+    protected $hidden = [];
 
     /**
-     * Define the relationship between two eloquent models: Entry & User
+     * Define the relationship between two eloquent models: Tag & User
      */
     public function user()
     {
