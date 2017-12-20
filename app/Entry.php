@@ -33,4 +33,12 @@ class Entry extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Define the relationship between two eloquent models: Entry & EntryHasTag
+     */
+    public function entryHasTag()
+    {
+        return $this->hasMany('App\EntryHasTag');
+    }
 }

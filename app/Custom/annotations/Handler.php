@@ -1,27 +1,28 @@
 <?php
 namespace App\Custom\Annotations;
 
-use App\User;
+use App\Entry;
+use App\EntryHasTag;
 use App\Tag;
+use App\User;
 
 class Handler
 {
-    private $user;
+    private $userId;
     private $entryId;
-    private $entry;
-
+    private $entryText;
     private $tags;
     private $mentions;
     private $markers = [];
 
-    public function setUser(User $user)
+    public function setUserId($userId)
     {
-        $this->user = $user;
+        $this->userId = $userId;
     }
 
-    public function getUser()
+    public function getUserId()
     {
-        return $this->user;
+        return $this->userId;
     }
 
     public function setEntryId($entryId)
@@ -34,14 +35,14 @@ class Handler
         return $this->entryId;
     }
 
-    public function setEntry($entry)
+    public function setEntryText($entryText)
     {
-        $this->entry = $entry;
+        $this->entryText = $entryText;
     }
 
-    public function getEntry()
+    public function getEntryText()
     {
-        return $this->entry;
+        return $this->entryText;
     }
 
     public function setTags($tags)
@@ -94,7 +95,7 @@ class Handler
     public function extractTags()
     {
         $tagAnnotations = new TagAnnotations();
-        $tagAnnotations->setEntry($this->entry);
+        $tagAnnotations->setEntry($this->entryText);
 
         $this->setTags($tagAnnotations->extract());
     }
@@ -140,7 +141,8 @@ class Handler
     public function save()
     {
         foreach ($this->tags as $tag) {
-            Tag::firstOrCreate(['user_id' => $this->user->id, 'name' => $tag]);
+            $persistedTag = Tag::firstOrCreate(['user_id' => $this->userId, 'name' => $tag]);
+            EntryHasTag::create(['entry_id' => $this->entryId, 'tag_id' => $persistedTag->getAttribute('id')]);
         }
 
         // echo "<pre>this->mentions: "; var_dump($this->mentions); echo "</pre>\n";

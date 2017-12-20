@@ -5,10 +5,19 @@ use App\Custom\Parser\ParserInterface;
 
 class AbstractAnnotations implements AnnotationsInterface
 {
+    /** @var string */
     private $type;
+
+    /** @var string */
     private $entry;
+
+    /** @var string */
     private $regex;
+
+    /** @var ParserInterface */
     private $parser;
+
+    /** @var array */
     private $annotations = [];
 
     public function setEntry($entry)

@@ -33,4 +33,12 @@ class Tag extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Define the relationship between two eloquent models: Tag & EntryHasTag
+     */
+    public function entryHasTag()
+    {
+        return $this->hasMany('App\EntryHasTag');
+    }
 }

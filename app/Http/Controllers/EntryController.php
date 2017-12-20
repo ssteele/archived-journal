@@ -94,13 +94,12 @@ class EntryController extends Controller
         // $persistedEntry = $user->entry()->save($entry);
 
         // save annotations
-        // $annotationsHandler->setUserId($user->getAttribute('id'));
+        $annotationsHandler->setUserId($user->getAttribute('id'));
         // $annotationsHandler->setEntryId($persistedEntry->getAttribute('id'));
-        // $annotationsHandler->setEntry($persistedEntry->getAttribute('entry'));
+        // $annotationsHandler->setEntryText($persistedEntry->getAttribute('entry'));
 
-        $annotationsHandler->setUser($user);
-        $annotationsHandler->setEntryId(6);
-        $annotationsHandler->setEntry($request->input('entry'));
+        $annotationsHandler->setEntryId(5);
+        $annotationsHandler->setEntryText($request->input('entry'));
 
         $annotationsHandler->extract();
         $annotationsHandler->save();
