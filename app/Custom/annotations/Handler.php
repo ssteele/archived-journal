@@ -2,7 +2,9 @@
 namespace App\Custom\Annotation;
 
 use App\Entry;
+use App\EntryHasMention;
 use App\EntryHasTag;
+use App\Mention;
 use App\Tag;
 use App\User;
 
@@ -106,7 +108,10 @@ class Handler
      */
     public function extractMentions()
     {
-        $this->setMentions(['samplemention']);
+        $mentionAnnotation = new MentionAnnotation();
+        $mentionAnnotation->setEntry($this->entryText);
+
+        $this->setMentions($mentionAnnotation->extract());
     }
 
     /**
@@ -130,7 +135,7 @@ class Handler
     public function extract()
     {
         $this->extractTags();
-        // $this->extractMentions();
+        $this->extractMentions();
         // $this->extractMarkers();
     }
 
@@ -143,6 +148,11 @@ class Handler
         foreach ($this->tags as $tag) {
             $persistedTag = Tag::firstOrCreate(['user_id' => $this->userId, 'name' => $tag]);
             EntryHasTag::create(['entry_id' => $this->entryId, 'tag_id' => $persistedTag->getAttribute('id')]);
+        }
+
+        foreach ($this->mentions as $mention) {
+            $persistedMention = Mention::firstOrCreate(['user_id' => $this->userId, 'name' => $mention]);
+            EntryHasMention::create(['entry_id' => $this->entryId, 'mention_id' => $persistedMention->getAttribute('id')]);
         }
 
         // echo "<pre>this->mentions: "; var_dump($this->mentions); echo "</pre>\n";
