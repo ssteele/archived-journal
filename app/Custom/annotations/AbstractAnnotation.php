@@ -73,6 +73,6 @@ class AbstractAnnotation implements AnnotationInterface
      */
     protected function removeDuplicates(array $annotations)
     {
-        return array_unique($annotations);
+        return array_values(array_unique($annotations));
     }
 }
