@@ -1,9 +1,9 @@
 <?php
-namespace App\Custom\Annotations;
+namespace App\Custom\Annotation;
 
 use App\Custom\Parser\ParserInterface;
 
-class AbstractAnnotations implements AnnotationsInterface
+class AbstractAnnotation implements AnnotationInterface
 {
     /** @var string */
     private $type;

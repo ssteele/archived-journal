@@ -1,7 +1,7 @@
 <?php
 namespace App\Custom\Parser;
 
-use App\Custom\Annotations\AnnotationsInterface;
+use App\Custom\Annotation\AnnotationInterface;
 
 class AnnotationParser implements ParserInterface
 {
@@ -12,7 +12,7 @@ class AnnotationParser implements ParserInterface
         $this->setAnnotation($annotation);
     }
 
-    public function setAnnotation(AnnotationsInterface $annotation)
+    public function setAnnotation(AnnotationInterface $annotation)
     {
         $this->annotation = $annotation;
     }

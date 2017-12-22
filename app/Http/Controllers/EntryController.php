@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Custom\Annotations\Handler;
+use App\Custom\Annotation\Handler;
 use App\Custom\LogDates;
 use App\Custom\LogDatesDropdown;
 use App\Custom\Tempo;
@@ -84,7 +84,7 @@ class EntryController extends Controller
      *
      * @return Response
      */
-    public function store(EntryRequest $request, Handler $annotationsHandler)
+    public function store(EntryRequest $request, Handler $annotationHandler)
     {
         // get authenticated user
         $user = Auth::user();
@@ -94,15 +94,15 @@ class EntryController extends Controller
         // $persistedEntry = $user->entry()->save($entry);
 
         // save annotations
-        $annotationsHandler->setUserId($user->getAttribute('id'));
-        // $annotationsHandler->setEntryId($persistedEntry->getAttribute('id'));
-        // $annotationsHandler->setEntryText($persistedEntry->getAttribute('entry'));
+        $annotationHandler->setUserId($user->getAttribute('id'));
+        // $annotationHandler->setEntryId($persistedEntry->getAttribute('id'));
+        // $annotationHandler->setEntryText($persistedEntry->getAttribute('entry'));
 
-        $annotationsHandler->setEntryId(5);
-        $annotationsHandler->setEntryText($request->input('entry'));
+        $annotationHandler->setEntryId(5);
+        $annotationHandler->setEntryText($request->input('entry'));
 
-        $annotationsHandler->extract();
-        $annotationsHandler->save();
+        $annotationHandler->extract();
+        $annotationHandler->save();
         die;
 
         // flash tempo

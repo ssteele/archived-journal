@@ -1,5 +1,5 @@
 <?php
-namespace App\Custom\Annotations;
+namespace App\Custom\Annotation;
 
 use App\Entry;
 use App\EntryHasTag;
@@ -94,10 +94,10 @@ class Handler
      */
     public function extractTags()
     {
-        $tagAnnotations = new TagAnnotations();
-        $tagAnnotations->setEntry($this->entryText);
+        $tagAnnotation = new TagAnnotation();
+        $tagAnnotation->setEntry($this->entryText);
 
-        $this->setTags($tagAnnotations->extract());
+        $this->setTags($tagAnnotation->extract());
     }
 
     /**

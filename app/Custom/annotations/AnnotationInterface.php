@@ -1,9 +1,9 @@
 <?php
-namespace App\Custom\Annotations;
+namespace App\Custom\Annotation;
 
 use App\Custom\Parser\ParserInterface;
 
-interface AnnotationsInterface
+interface AnnotationInterface
 {
     public function getEntry();
     public function getRegex();

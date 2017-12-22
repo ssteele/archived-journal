@@ -1,6 +1,6 @@
 <?php
 
-use App\Custom\Annotations\TagAnnotations;
+use App\Custom\Annotation\TagAnnotation;
 use App\Custom\Parser\AnnotationParser;
 
 class AnnotationParserTest extends TestCase
@@ -9,7 +9,7 @@ class AnnotationParserTest extends TestCase
 
     private function prepareTags($input)
     {
-        $this->tagAnnotations = new TagAnnotations();
+        $this->tagAnnotations = new TagAnnotation();
         $this->tagAnnotations->setEntry($input);
     }
 

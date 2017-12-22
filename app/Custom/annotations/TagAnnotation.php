@@ -1,11 +1,11 @@
 <?php
-namespace App\Custom\Annotations;
+namespace App\Custom\Annotation;
 
 use App\Custom\Parser\AnnotationParser;
 
-class TagAnnotations extends AbstractAnnotations
+class TagAnnotation extends AbstractAnnotation
 {
-    private $type = 'tags';
+    private $type = 'tag';
     private $regex = '/\#([^\s,.;?!]+)/';
 
     public function __construct()
