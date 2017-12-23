@@ -1,9 +1,9 @@
 <?php
-namespace App\Custom;
+namespace App\Services\LogDates;
 
 use Carbon\Carbon;
 
-class LogDatesDropdown
+class LogDateDropdown
 {
     private $datesSubmitted;
     private $dateLimit;
@@ -12,10 +12,10 @@ class LogDatesDropdown
      * Construct
      * @param integer $dateLimit    Number of days back to fetch
      */
-    public function __construct(LogDates $logDates)
+    public function __construct(LogDate $logDate)
     {
-        $this->dateLimit = $logDates->dateLimit;
-        $this->datesSubmitted = array_reverse($logDates->datesSubmitted);
+        $this->dateLimit = $logDate->dateLimit;
+        $this->datesSubmitted = array_reverse($logDate->datesSubmitted);
     }
 
     /**

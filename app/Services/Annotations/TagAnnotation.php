@@ -1,7 +1,7 @@
 <?php
-namespace App\Custom\Annotation;
+namespace App\Services\Annotation;
 
-use App\Custom\Parser\AnnotationParser;
+use App\Services\Parser\AnnotationParser;
 
 class TagAnnotation extends AbstractAnnotation
 {

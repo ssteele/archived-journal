@@ -1,5 +1,5 @@
 <?php
-namespace App\Custom\Annotation;
+namespace App\Services\Annotation;
 
 use App\Entry;
 use App\EntryHasMention;

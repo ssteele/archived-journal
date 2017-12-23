@@ -1,5 +1,5 @@
 <?php
-namespace App\Custom;
+namespace App\Services\Tempo;
 
 class TempoAverage
 {

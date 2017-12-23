@@ -1,8 +1,8 @@
 <?php
 
-use App\Custom\Annotation\MentionAnnotation;
-use App\Custom\Annotation\TagAnnotation;
-use App\Custom\Parser\AnnotationParser;
+use App\Services\Annotation\MentionAnnotation;
+use App\Services\Annotation\TagAnnotation;
+use App\Services\Parser\AnnotationParser;
 
 class AnnotationParserTest extends TestCase
 {

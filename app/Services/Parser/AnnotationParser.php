@@ -1,7 +1,7 @@
 <?php
-namespace App\Custom\Parser;
+namespace App\Services\Parser;
 
-use App\Custom\Annotation\AnnotationInterface;
+use App\Services\Annotation\AnnotationInterface;
 
 class AnnotationParser implements ParserInterface
 {

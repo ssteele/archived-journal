@@ -1,7 +1,7 @@
 <?php
-namespace App\Custom;
+namespace App\Services\LogDates;
 
-class LogDates
+class LogDate
 {
     public $dateLimit;
     public $datesSubmitted;

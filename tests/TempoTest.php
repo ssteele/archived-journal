@@ -1,7 +1,7 @@
 <?php
 
-use App\Custom\Tempo;
-use App\Custom\TempoAverage;
+use App\Services\Tempo\Tempo;
+use App\Services\Tempo\TempoAverage;
 
 class TempoTest extends TestCase
 {

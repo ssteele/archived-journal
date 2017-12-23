@@ -1,14 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Custom\Annotation\Handler;
-use App\Custom\LogDates;
-use App\Custom\LogDatesDropdown;
-use App\Custom\Tempo;
-use App\Custom\TempoAverage;
 use App\Entry;
 use App\Http\Requests\EntryRequest;
 use App\Http\Requests\EntryUploadRequest;
+use App\Services\Annotation\Handler;
+use App\Services\LogDates\LogDate;
+use App\Services\LogDates\LogDateDropdown;
+use App\Services\Tempo\Tempo;
+use App\Services\Tempo\TempoAverage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,9 +37,9 @@ class EntryController extends Controller
     public function index()
     {
         // get unlogged dates
-        $logDates = new LogDates($this->dateLimit);
-        $logDatesDropdown = new LogDatesDropdown($logDates->get());
-        $dates = $logDatesDropdown->create();
+        $logDate = new LogDate($this->dateLimit);
+        $logDateDropdown = new LogDateDropdown($logDate->get());
+        $dates = $logDateDropdown->create();
 
         return view('entry', compact('dates'));
     }

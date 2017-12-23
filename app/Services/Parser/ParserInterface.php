@@ -1,5 +1,5 @@
 <?php
-namespace App\Custom\Parser;
+namespace App\Services\Parser;
 
 interface ParserInterface
 {
