@@ -67,19 +67,6 @@ class EntryController extends Controller
     }
 
     /**
-     * Redirect and flash recent activity
-     *
-     * @return Response
-     */
-    private function redirect($average)
-    {
-        // redirect and flash calculated tempo
-        return redirect('')->with([
-            'flash_message' => $average,
-        ]);
-    }
-
-    /**
      * Save a journal entry and it's annotations
      *
      * @return Response
@@ -90,25 +77,21 @@ class EntryController extends Controller
         $user = Auth::user();
 
         // save entry
-        // $entry = new Entry($request->all());
-        // $persistedEntry = $user->entry()->save($entry);
+        $entry = new Entry($request->all());
+        $persistedEntry = $user->entry()->save($entry);
 
         // save annotations
         $annotationHandler->setUserId($user->getAttribute('id'));
-        // $annotationHandler->setEntryId($persistedEntry->getAttribute('id'));
-        // $annotationHandler->setEntryText($persistedEntry->getAttribute('entry'));
-
-        $annotationHandler->setEntryId(5);
-        $annotationHandler->setEntryText($request->input('entry'));
+        $annotationHandler->setEntryId($persistedEntry->getAttribute('id'));
+        $annotationHandler->setEntryText($persistedEntry->getAttribute('entry'));
 
         $annotationHandler->extract();
         $annotationHandler->save();
-        die;
 
-        // flash tempo
         if (is_null($request->bulk)) {
-            $average = $this->calculateTempo();
-            return $this->redirect($average);
+            return redirect('')->with([
+                'flash_tempo' => $this->calculateTempo(),
+            ]);
         }
     }
 
@@ -168,7 +151,8 @@ class EntryController extends Controller
             $this->store($entryRequest);
         }
 
-        $this->calculateTempo();
-        return $this->redirect();
+        return redirect('')->with([
+            'flash_tempo' => $this->calculateTempo(),
+        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Annotation;
 use App\Entry;
 use App\EntryHasMention;
 use App\EntryHasTag;
+use App\Marker;
 use App\Mention;
 use App\Tag;
 use App\User;
@@ -83,7 +84,7 @@ class Handler
     private function queryMarkerCategories()
     {
         $markerCategories = \DB::table('marker_categories')
-            ->select('id', 'name', 'shorthand')
+            ->select('id', 'name', 'shorthand', 'is_default')
             ->where('user_id', $this->userId)
             ->get();
 
@@ -120,12 +121,13 @@ class Handler
      */
     public function extractMarkers()
     {
-        // $markerCategories = $this->queryMarkerCategories();
-        // foreach ($markerCategories as $markerCategory) {
-        //     // pass
-        // }
+        $markerAnnotation = new MarkerAnnotation();
+        $markerAnnotation->setEntry($this->entryText);
 
-        // $this->setMarkers(['f' => 'sample feeling']);
+        $markers = $markerAnnotation->extract();
+        $markerCategories = $this->queryMarkerCategories();
+
+        $this->setMarkers($markerAnnotation->assignMarkersToCategories($markers, $markerCategories));
     }
 
     /**
@@ -136,7 +138,7 @@ class Handler
     {
         $this->extractTags();
         $this->extractMentions();
-        // $this->extractMarkers();
+        $this->extractMarkers();
     }
 
     /**
@@ -155,7 +157,10 @@ class Handler
             EntryHasMention::create(['entry_id' => $this->entryId, 'mention_id' => $persistedMention->getAttribute('id')]);
         }
 
-        // echo "<pre>this->mentions: "; var_dump($this->mentions); echo "</pre>\n";
-        // echo "<pre>this->markers: "; var_dump($this->markers); echo "</pre>\n";
+        foreach ($this->markers as $markerCategory => $markers) {
+            foreach ($markers as $marker) {
+                $persistedMarker = Marker::firstOrCreate(['marker_category_id' => $markerCategory, 'entry_id' => $this->entryId, 'marker' => $marker]);
+            }
+        }
     }
 }

@@ -27,7 +27,7 @@ class Mention extends Model
     protected $hidden = [];
 
     /**
-     * Define the relationship between two eloquent models: Tag & User
+     * Define the relationship between two eloquent models: Mention & User
      */
     public function user()
     {

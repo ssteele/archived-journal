@@ -43,20 +43,21 @@ class AddMetaColumnsToEntriesTable extends Migration
                 ->onDelete('cascade');
             $table->string('name', 64);
             $table->string('shorthand', 1)->nullable();
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
 
         Schema::create('markers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('entry_id')->unsigned();
-            $table->foreign('entry_id')
-                ->references('id')
-                ->on('entries')
-                ->onDelete('cascade');
             $table->integer('marker_category_id')->unsigned();
             $table->foreign('marker_category_id')
                 ->references('id')
                 ->on('marker_categories')
+                ->onDelete('cascade');
+            $table->integer('entry_id')->unsigned();
+            $table->foreign('entry_id')
+                ->references('id')
+                ->on('entries')
                 ->onDelete('cascade');
             $table->text('marker');
             $table->timestamps();

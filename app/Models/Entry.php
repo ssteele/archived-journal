@@ -49,4 +49,12 @@ class Entry extends Model
     {
         return $this->hasMany('App\EntryHasMention');
     }
+
+    /**
+     * Define the relationship between two eloquent models: Entry & Marker
+     */
+    public function marker()
+    {
+        return $this->hasMany('App\Marker');
+    }
 }
