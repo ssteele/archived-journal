@@ -6,7 +6,7 @@ use App\Services\Parser\AnnotationParser;
 class TagAnnotation extends AbstractAnnotation
 {
     private $type = 'tag';
-    private $regex = '/\#([^\s,.;?!]+)/';
+    private $regex = '/\#(\w+)/';
 
     public function __construct()
     {

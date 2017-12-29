@@ -127,7 +127,7 @@ class EntryController extends Controller
      *
      * @return Response
      */
-    public function bulkStore(EntryUploadRequest $request)
+    public function bulkStore(EntryUploadRequest $request, Handler $annotationHandler)
     {
         $csv = $request->input('csv');
         $csvUpload = $request->file('csv')->move(base_path() . '/public/', $csv);
@@ -148,7 +148,7 @@ class EntryController extends Controller
             $entryRequest->setContainer(app());
             $entryRequest->validate();
 
-            $this->store($entryRequest);
+            $this->store($entryRequest, $annotationHandler);
         }
 
         return redirect('')->with([
