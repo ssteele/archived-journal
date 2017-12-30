@@ -17,6 +17,12 @@ class MarkerAnnotation extends AbstractAnnotation
         $this->setParser(new AnnotationParser($this));
     }
 
+    /**
+     * Parse markers once again to sort into marker categories
+     * @param  array  $markers          Markers parsed from entries
+     * @param  array  $markerCategories Marker category entities
+     * @return array                    Nested array of markers within categories
+     */
     public function assignMarkersToCategories(array $markers = [], array $markerCategories = [])
     {
         $originalMarkers = $markers;
