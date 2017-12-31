@@ -5,7 +5,10 @@ use App\Services\Parser\AnnotationParser;
 
 class MentionAnnotation extends AbstractAnnotation
 {
+    /** @var string */
     private $type = 'mention';
+
+    /** @var string */
     private $regex = '/\@([a-z]+)/';
 
     public function __construct()

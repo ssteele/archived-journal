@@ -5,8 +5,11 @@ use Carbon\Carbon;
 
 class LogDateDropdown
 {
-    private $datesSubmitted;
+    /** @var integer */
     private $dateLimit;
+
+    /** @var array */
+    private $datesSubmitted;
 
     /**
      * Construct

@@ -3,8 +3,13 @@ namespace App\Services\Tempo;
 
 class Tempo
 {
-    public $data;
+    /** @var integer */
     public $dateLimit;
+
+    /** @var array */
+    public $data;
+
+    /** @var array */
     private $rawData;
 
     /**

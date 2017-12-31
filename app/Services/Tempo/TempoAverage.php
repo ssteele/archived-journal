@@ -3,11 +3,22 @@ namespace App\Services\Tempo;
 
 class TempoAverage
 {
+    /** @var object */
     private $tempo;
+
+    /** @var array */
     private $breakpoints;
+
+    /** @var array */
     private $step;
+
+    /** @var integer */
     private $days = 0;
+
+    /** @var integer */
     private $total = 0;
+
+    /** @var float */
     private $average = 0;
 
     /**

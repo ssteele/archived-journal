@@ -5,6 +5,7 @@ use App\Services\Annotation\AnnotationInterface;
 
 class AnnotationParser implements ParserInterface
 {
+    /** @var object */
     private $annotation;
 
     public function __construct($annotation)

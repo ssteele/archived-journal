@@ -3,7 +3,10 @@ namespace App\Services\LogDates;
 
 class LogDate
 {
+    /** @var integer */
     public $dateLimit;
+
+    /** @var array */
     public $datesSubmitted;
 
     /**

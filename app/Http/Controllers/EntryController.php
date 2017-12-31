@@ -14,9 +14,16 @@ use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
 {
+    /** @var integer */
     private $dateLimit = 28;
+
+    /** @var float */
     private $average = 0;
+
+    /** @var array */
     private $csvRows = [];
+
+    /** @var integer */
     private $csvCounter = 0;
 
     /**

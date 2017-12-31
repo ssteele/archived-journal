@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 
 class MarkerAnnotation extends AbstractAnnotation
 {
+    /** @var string */
     private $type = 'marker';
-    private $regex = '/\<([^\>]+)\>/';
 
-    private $markerAnnotation;
+    /** @var string */
+    private $regex = '/\<([^\>]+)\>/';
 
     public function __construct()
     {

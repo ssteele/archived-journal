@@ -11,11 +11,22 @@ use App\User;
 
 class Handler
 {
+    /** @var integer */
     private $userId;
+
+    /** @var integer */
     private $entryId;
+
+    /** @var string */
     private $entryText;
-    private $tags;
-    private $mentions;
+
+    /** @var array */
+    private $tags = [];
+
+    /** @var array */
+    private $mentions = [];
+
+    /** @var array */
     private $markers = [];
 
     public function setUserId($userId)
