@@ -23,7 +23,7 @@ class AddMetaColumnsToEntriesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('relations', function (Blueprint $table) {
+        Schema::create('mentions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
@@ -85,7 +85,7 @@ class AddMetaColumnsToEntriesTable extends Migration
             $table->integer('mention_id')->unsigned();
             $table->foreign('mention_id')
                 ->references('id')
-                ->on('relations')
+                ->on('mentions')
                 ->onDelete('cascade');
         });
     }
@@ -100,7 +100,7 @@ class AddMetaColumnsToEntriesTable extends Migration
         Schema::drop('entry_has_tags');
         Schema::drop('entry_has_mentions');
         Schema::drop('tags');
-        Schema::drop('relations');
+        Schema::drop('mentions');
         Schema::drop('markers');
         Schema::drop('marker_categories');
     }

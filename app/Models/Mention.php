@@ -10,7 +10,7 @@ class Mention extends Model
      *
      * @var string
      */
-    protected $table = 'relations';
+    protected $table = 'mentions';
 
     /**
      * The attributes that are mass assignable.
